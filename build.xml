@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="yanukovich" basedir="." default="default">
+	
+    <property name="src.dir"     	   value="${basedir}/src"/>
+    <property name="dist.dir"     	   value="${basedir}/dist"/>
+    <property name="jar.dir"    	   value="${dist.dir}/lib"/>
+    <property name="manifest.dir"      value="${web.dir}/META-INF"/>
+	
+    <property name="jar.name"    	   value="yanukovich.jar"/>
+
+	
+    <path id="dependencies">
+        <fileset dir="${basedir}/lib" includes="*.jar"/>
+    </path>
+    	
+	<target name="default" depends="setup,compile,jar"/>
+	
+	<target name="setup">
+	    <mkdir dir="dist" />
+		<mkdir dir="lib" />
+	</target>
+	
+	<target name="compile">
+	    <delete dir="${dist.dir}/compile" />
+	    <mkdir dir="${dist.dir}/compile" />
+	    <javac destdir="${dist.dir}/compile"
+            nowarn="off" 
+	    	debug="true"
+	    	classpathref="dependencies"
+	    	includeantruntime="false"
+            encoding="utf-8">
+         <compilerarg value="-Xlint:all"/>
+         <src path="${src.dir}"/>
+	    </javac>
+	    <copy todir="${dist.dir}/compile/img">
+	        <fileset dir="img" />
+	    </copy>
+	</target>
+	
+	<target name="jar">
+        <jar destfile="${jar.dir}/${jar.name}" basedir="${dist.dir}/compile">
+            <manifest>
+                <attribute name="Implementation-Vendor" value="ALESKOVETS Ltd" />
+            	<attribute name="Main-Class" value="ru.aleskovets.swing.YANUKOVICHELIZATOR" />
+            </manifest>
+        </jar>
+	</target>
+	
+</project>
